@@ -100,7 +100,7 @@ autoprovisionStage2()
         #/root/autoprovision-stage3.py
     else
         signalAutoprovisionWorking
-
+ping 19
 	echo Updating system time using ntp; otherwise the openwrt.org certificates are rejected as not yet valid.
         ntpd -d -q -n -p 0.openwrt.pool.ntp.org
 
@@ -112,9 +112,10 @@ autoprovisionStage2()
 
         installPackages
 
+        chmod +x ${overlay_root}/etc/rc.local
         cat >${overlay_root}/etc/rc.local <<EOF
 chmod a+x /etc/stage3.sh
-{ bash /etc/stage3.sh } || exit 1
+bash /etc/stage3.sh || exit 1
 EOF
 
         mkdir -p /var/log/archive
