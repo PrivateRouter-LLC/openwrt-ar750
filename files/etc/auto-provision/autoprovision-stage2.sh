@@ -68,8 +68,6 @@ installPackages()
    opkg install luci-theme-bootstrap kmod-usb-storage kmod-usb-ohci kmod-usb-uhci e2fsprogs fdisk resize2fs htop debootstrap luci-compat luci-lib-ipkg dnsmasq
    opkg install git git-http jq curl bash wget kmod-usb-net-rndis luci-mod-dashboard luci-app-commands luci-app-vnstat rpcd-mod-luci luci-app-statistics luci-app-samba4 samba4-server luci-mod-admin-full luci-mod-network luci-mod-status luci-mod-system kmod-usb-net-cdc-eem
    opkg install  kmod-usb-net-cdc-ether kmod-usb-net-cdc-subset kmod-nls-base kmod-usb-core kmod-usb-net kmod-usb-net-cdc-ether kmod-usb2 kmod-usb-net-ipheth usbmuxd libimobiledevice usbutils luci-app-nlbwmon luci-app-adblock nano ttyd fail2ban speedtest-netperf opkg install vsftpd samba36-server luci-app-samba
-   echo "Installing TorGuard Wireguard..."
-   opkg install /etc/luci-app-tgwireguard_1.0.3-1_all.ipk
 
  ## V2RAYA INSTALLER ##
    echo "Installing V2rayA..."
@@ -89,7 +87,7 @@ installPackages()
 
   sed -i 's,http,https,g' /etc/opkg/distfeeds.conf;
 
-   echo "PrivateRouter update complete!"
+  echo "PrivateRouter update complete!"
 }
 
 autoprovisionStage2()
@@ -116,7 +114,7 @@ autoprovisionStage2()
 
         cat >${overlay_root}/etc/rc.local <<EOF
 chmod a+x /etc/stage3.sh
-{ bash /etc/stage3 } && touch /etc/stage3-done  || exit 1
+{ bash /etc/stage3.sh } || exit 1
 EOF
 
         mkdir -p /var/log/archive

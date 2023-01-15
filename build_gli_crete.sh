@@ -1,11 +1,11 @@
 #!/bin/bash
 
-#Documentation: https://openwrt.org/docs/guide-user/additional-software/imagebuilder
-
 OUTPUT="$(pwd)/images"
-BUILDER="https://downloads.openwrt.org/releases/22.03.2/targets/ath79/generic/openwrt-imagebuilder-22.03.2-ath79-generic.Linux-x86_64.tar.xz"
-#KERNEL_PARTSIZE=128 #Kernel-Partitionsize in MB
-#ROOTFS_PARTSIZE=4096 #Rootfs-Partitionsize in MB
+BUILD_VERSION="22.03.3"
+BOARD_NAME="ath79"
+BOARD_SUBNAME="generic"
+BUILDER="https://downloads.openwrt.org/releases/${BUILD_VERSION}/targets/${BOARD_NAME}/${BOARD_SUBNAME}/openwrt-imagebuilder-${BUILD_VERSION}-${BOARD_NAME}-${BOARD_SUBNAME}.Linux-x86_64.tar.xz"
+BASEDIR=$(realpath "$0" | xargs dirname)
 
 # download image builder
 if [ ! -f "${BUILDER##*/}" ]; then
@@ -13,20 +13,14 @@ if [ ! -f "${BUILDER##*/}" ]; then
 	tar xJvf "${BUILDER##*/}"
 fi
 
-mkdir "$OUTPUT"
-cd openwrt-*/
+[ -d "${OUTPUT}" ] || mkdir "${OUTPUT}"
 
-# list all targets for this image builder, consider 'make help' as well
-# make info
+cd openwrt-*/
 
 # clean previous images
 make clean
 
-# Packages are added if no prefix is given, '-packaganame' does not integrate a package
-#sed -i "s/CONFIG_TARGET_KERNEL_PARTSIZE=.*/CONFIG_TARGET_KERNEL_PARTSIZE=$KERNEL_PARTSIZE/g" .config
-#sed -i "s/CONFIG_TARGET_ROOTFS_PARTSIZE=.*/CONFIG_TARGET_ROOTFS_PARTSIZE=$ROOTFS_PARTSIZE/g" .config
-
 make image  PROFILE="glinet_gl-ar750" \
            PACKAGES="block-mount kmod-fs-ext4 kmod-usb-storage blkid mount-utils swap-utils e2fsprogs fdisk luci dnsmasq" \
-           FILES="/home/ubuntu/Seafile/OpenWRT/build_script/AUTO_EXTROOT_BUILDS/AR750/files/" \
-            BIN_DIR="$OUTPUT"
+           FILES="${BASEDIR}/files/" \
+           BIN_DIR="$OUTPUT"
