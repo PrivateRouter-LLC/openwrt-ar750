@@ -79,6 +79,16 @@ installPackages()
    log_say "░░░░░   ░░░░░  ░░░░░░    ░░░░░░░░    ░░░░░   ░░░░░░  ░░░░░            "
 
    opkg update
+   #install mesh support
+   opkg remove wpad
+   opkg remove wpad wpad-basic
+   opkg remove wpad-basic-openssl
+   opkg remove wpad-basic-wolfssl
+   opkg remove wpad-wolfssl
+   opkg install wpad-mesh-openssl
+   opkg install kmod-batman-adv
+   opkg install batctl
+   opkg install avahi-autoipd
    #Go Go Packages
    opkg install base-files busybox ca-bundle cgi-io dnsmasq dropbear firewall fstools fwtool getrandom hostapd-common ip6tables iptables iw iwinfo jshn jsonfilter kernel
    opkg install kmod-ath kmod-ath9k kmod-ath9k-common kmod-cfg80211 kmod-gpio-button-hotplug kmod-ip6tables kmod-ipt-conntrack kmod-ipt-core kmod-ipt-nat kmod-ipt-offload
